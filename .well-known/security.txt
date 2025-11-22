@@ -1,0 +1,81 @@
+Contact: mailto:security@ubicity.example.org
+Expires: 2026-12-31T23:59:59Z
+Preferred-Languages: en
+Canonical: https://github.com/Hyperpolymath/ubicity/.well-known/security.txt
+
+# Security Policy
+
+## Supported Versions
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 0.3.x   | :white_check_mark: |
+| 0.2.x   | :white_check_mark: |
+| < 0.2   | :x:                |
+
+## Reporting a Vulnerability
+
+**DO NOT** open a public GitHub issue for security vulnerabilities.
+
+Instead:
+
+1. **Email**: security@ubicity.example.org (PGP key available on request)
+2. **Expected Response**: Within 48 hours
+3. **Disclosure Timeline**: 90 days coordinated disclosure
+
+## Security Measures
+
+- **Memory Safety**: WASM (Rust) provides memory safety guarantees
+- **Type Safety**: ReScript compile-time types + TypeScript
+- **Sandboxing**: WASM runs in isolated linear memory
+- **Permissions**: Deno explicit permissions (--allow-read, --allow-write)
+- **Data Privacy**: Local-first, no network calls, no telemetry
+- **Offline-First**: Works completely air-gapped
+
+## Security-Relevant Features
+
+- No network dependencies (offline-first architecture)
+- No external API calls
+- No user tracking or analytics
+- No third-party CDN dependencies
+- All data stays local
+- Explicit file system permissions via Deno
+
+## Known Security Considerations
+
+- User data in `./ubicity-data/` should be backed up securely
+- Anonymization tools available (see `src/privacy.ts`)
+- GPS coordinates can be fuzzed for privacy
+- PII removal utilities included
+
+## CVE Process
+
+If a CVE is assigned:
+1. We will acknowledge within 24 hours
+2. Develop patch within 7-14 days
+3. Release security update
+4. Publish advisory on GitHub Security
+5. Update CHANGELOG.md
+
+## Security Audits
+
+Last audit: Never (v0.3.0 is initial release)
+Next planned audit: TBD
+
+## Responsible Disclosure Recognition
+
+Security researchers who follow responsible disclosure will be:
+- Credited in CHANGELOG.md (unless anonymous preferred)
+- Listed in SECURITY_HALL_OF_FAME.md
+- Offered co-authorship on security advisories
+
+## Out of Scope
+
+- Social engineering attacks
+- Physical access attacks
+- DoS via legitimate resource exhaustion
+- Bugs in Deno/Rust/ReScript compilers (report upstream)
+
+---
+
+This security policy follows RFC 9116 (security.txt)

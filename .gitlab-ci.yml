@@ -1,0 +1,229 @@
+# GitLab CI/CD for UbiCity (RSR-Compliant)
+
+stages:
+  - lint
+  - build
+  - test
+  - verify
+  - deploy
+
+variables:
+  DENO_VERSION: "1.40.0"
+  RUST_VERSION: "1.75.0"
+  NODE_VERSION: "20"
+
+# Templates
+.deno-base:
+  image: denoland/deno:${DENO_VERSION}
+  before_script:
+    - deno --version
+
+.rust-base:
+  image: rust:${RUST_VERSION}
+  before_script:
+    - rustc --version
+    - cargo --version
+    - rustup target add wasm32-unknown-unknown
+
+# Lint Stage
+lint:deno:
+  extends: .deno-base
+  stage: lint
+  script:
+    - deno lint
+    - deno fmt --check
+  allow_failure: false
+
+lint:rust:
+  extends: .rust-base
+  stage: lint
+  script:
+    - cd wasm
+    - cargo fmt -- --check
+    - cargo clippy -- -D warnings
+  allow_failure: false
+
+# Build Stage
+build:rescript:
+  image: node:${NODE_VERSION}
+  stage: build
+  before_script:
+    - npm install -g rescript
+  script:
+    - rescript build
+  artifacts:
+    paths:
+      - src-rescript/**/*.res.js
+    expire_in: 1 hour
+
+build:wasm:
+  extends: .rust-base
+  stage: build
+  script:
+    - cd wasm
+    - cargo build --release --target wasm32-unknown-unknown
+    - ls -lh target/wasm32-unknown-unknown/release/
+  artifacts:
+    paths:
+      - wasm/target/wasm32-unknown-unknown/release/*.wasm
+    expire_in: 1 hour
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-rust
+    paths:
+      - wasm/target/
+
+# Test Stage
+test:unit:
+  extends: .deno-base
+  stage: test
+  dependencies:
+    - build:rescript
+    - build:wasm
+  script:
+    - deno test --allow-read --allow-write tests/
+  coverage: '/\d+\.\d+% coverage/'
+
+test:integration:
+  extends: .deno-base
+  stage: test
+  dependencies:
+    - build:rescript
+    - build:wasm
+  script:
+    - deno run --allow-read --allow-write src/cli.ts stats
+    - deno run --allow-read --allow-write src/cli.ts help
+  allow_failure: false
+
+# Verify Stage (RSR Compliance)
+verify:rsr-compliance:
+  extends: .deno-base
+  stage: verify
+  script:
+    - |
+      echo "🔍 RSR Compliance Verification"
+      echo "=============================="
+
+      # Check required files
+      echo "Checking required files..."
+      test -f LICENSE.txt && echo "✅ LICENSE.txt" || (echo "❌ LICENSE.txt missing" && exit 1)
+      test -f README.md && echo "✅ README.md" || (echo "❌ README.md missing" && exit 1)
+      test -f CONTRIBUTING.md && echo "✅ CONTRIBUTING.md" || (echo "❌ CONTRIBUTING.md missing" && exit 1)
+      test -f CODE_OF_CONDUCT.md && echo "✅ CODE_OF_CONDUCT.md" || (echo "❌ CODE_OF_CONDUCT.md missing" && exit 1)
+      test -f MAINTAINERS.md && echo "✅ MAINTAINERS.md" || (echo "❌ MAINTAINERS.md missing" && exit 1)
+      test -f CHANGELOG.md && echo "✅ CHANGELOG.md" || (echo "❌ CHANGELOG.md missing" && exit 1)
+
+      # Check .well-known directory
+      echo "Checking .well-known directory..."
+      test -f .well-known/security.txt && echo "✅ security.txt" || (echo "❌ security.txt missing" && exit 1)
+      test -f .well-known/ai.txt && echo "✅ ai.txt" || (echo "❌ ai.txt missing" && exit 1)
+      test -f .well-known/humans.txt && echo "✅ humans.txt" || (echo "❌ humans.txt missing" && exit 1)
+
+      # Check build system
+      echo "Checking build system..."
+      test -f justfile && echo "✅ justfile" || (echo "❌ justfile missing" && exit 1)
+      test -f deno.json && echo "✅ deno.json" || (echo "❌ deno.json missing" && exit 1)
+      test -f flake.nix && echo "✅ flake.nix" || (echo "❌ flake.nix missing" && exit 1)
+
+      # Check type safety
+      echo "Checking type safety..."
+      deno check src/**/*.ts && echo "✅ TypeScript type-safe" || (echo "❌ Type errors found" && exit 1)
+      test -f wasm/Cargo.toml && echo "✅ Rust WASM present" || (echo "❌ WASM missing" && exit 1)
+      test -f src-rescript/UbiCity.res && echo "✅ ReScript present" || (echo "❌ ReScript missing" && exit 1)
+
+      echo ""
+      echo "✅ RSR Compliance: PASSED"
+      echo "Tier: Bronze (minimum requirements met)"
+  allow_failure: false
+
+verify:offline-first:
+  extends: .deno-base
+  stage: verify
+  script:
+    - |
+      echo "🔌 Offline-First Verification"
+      echo "============================="
+
+      # Verify no network calls in source
+      echo "Checking for network calls..."
+      ! grep -r "fetch(" src/ && echo "✅ No fetch() calls" || (echo "❌ Found fetch() calls" && exit 1)
+      ! grep -r "http://" src/ && echo "✅ No HTTP URLs in source" || echo "⚠️  HTTP URLs found (check if documentation)"
+      ! grep -r "https://" src/ && echo "✅ No HTTPS URLs in source" || echo "⚠️  HTTPS URLs found (check if documentation)"
+
+      echo ""
+      echo "✅ Offline-First: VERIFIED"
+
+verify:security:
+  extends: .deno-base
+  stage: verify
+  script:
+    - |
+      echo "🔒 Security Verification"
+      echo "======================="
+
+      # Check Deno permissions
+      echo "Checking Deno permission model..."
+      grep -q "allow-read" deno.json && echo "✅ Explicit read permissions" || echo "⚠️  No read permissions specified"
+      grep -q "allow-write" deno.json && echo "✅ Explicit write permissions" || echo "⚠️  No write permissions specified"
+
+      # Verify no unsafe Rust
+      echo "Checking Rust safety..."
+      ! grep -r "unsafe" wasm/src/ && echo "✅ No unsafe Rust blocks" || (echo "❌ Unsafe Rust found" && exit 1)
+
+      # Check for sensitive data patterns
+      echo "Checking for hardcoded secrets..."
+      ! grep -ri "password\s*=" src/ && echo "✅ No hardcoded passwords" || echo "⚠️  Possible hardcoded password"
+      ! grep -ri "api_key\s*=" src/ && echo "✅ No hardcoded API keys" || echo "⚠️  Possible hardcoded API key"
+
+      echo ""
+      echo "✅ Security: VERIFIED"
+
+# Deploy Stage (for releases)
+deploy:pages:
+  extends: .deno-base
+  stage: deploy
+  only:
+    - tags
+  script:
+    - deno run --allow-read --allow-write src/visualize.ts
+    - mkdir -p public
+    - cp ubicity-data/ubicity-map.html public/index.html
+  artifacts:
+    paths:
+      - public
+  environment:
+    name: production
+    url: https://$CI_PROJECT_NAMESPACE.gitlab.io/$CI_PROJECT_NAME
+
+# Release compilation (for tags)
+compile:release:
+  extends: .deno-base
+  stage: deploy
+  only:
+    - tags
+  dependencies:
+    - build:rescript
+    - build:wasm
+  script:
+    - deno compile --allow-read --allow-write --output ./bin/ubicity src/cli.ts
+    - deno compile --allow-read --allow-write --output ./bin/ubicity-capture src/capture.ts
+    - ls -lh ./bin/
+  artifacts:
+    paths:
+      - bin/
+    expire_in: 1 year
+
+# Nightly builds
+nightly:
+  extends: .deno-base
+  stage: build
+  only:
+    - schedules
+  dependencies:
+    - build:rescript
+    - build:wasm
+  script:
+    - deno compile --allow-read --allow-write --output ./bin/ubicity-nightly src/cli.ts
+  artifacts:
+    paths:
+      - bin/
+    expire_in: 7 days

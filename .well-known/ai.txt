@@ -1,0 +1,89 @@
+# AI Training and Usage Policy
+
+## Training on UbiCity Code
+
+**Status**: CONDITIONALLY PERMITTED
+
+You may train AI models on UbiCity source code under these conditions:
+
+### ✅ Permitted Uses
+
+1. **Open Source AI Models**
+   - Models with open weights and training data transparency
+   - Example: Llama, Mistral, CodeLlama (with proper attribution)
+
+2. **Academic Research**
+   - Published papers with reproducible methodology
+   - Dataset transparency and citation
+
+3. **Educational Purposes**
+   - Teaching materials citing UbiCity as example
+   - Code explanation and documentation generation
+
+### ❌ Prohibited Uses
+
+1. **Closed-Source Commercial AI**
+   - Training proprietary models (e.g., GitHub Copilot, ChatGPT Code) without explicit permission
+   - Commercial code generation without attribution
+
+2. **Surveillance or Control**
+   - Training models for user behavior prediction
+   - Creating tools for monitoring or restricting developers
+
+3. **License Laundering**
+   - Using AI to circumvent GPL/MIT licensing
+   - Generating code without proper attribution
+
+## Attribution Requirements
+
+If you use UbiCity code in AI training:
+
+1. **Cite the Repository**
+   ```
+   UbiCity Learning Capture System
+   https://github.com/Hyperpolymath/ubicity
+   License: Dual MIT / Palimpsest v0.8
+   ```
+
+2. **Respect License Terms**
+   - MIT license for permissive use
+   - Palimpsest v0.8 for values-aligned use
+
+3. **Disclose Training Data**
+   - List UbiCity in your training corpus
+   - Specify which version/commit
+
+## AI-Generated Contributions
+
+We **welcome** AI-assisted contributions to UbiCity, provided:
+
+1. **Human Review**: All AI-generated code must be reviewed and understood by a human
+2. **Attribution**: Disclose AI tool used (e.g., "Co-authored-by: Claude AI")
+3. **Quality**: Maintains UbiCity's standards (type safety, tests, docs)
+4. **License Compatibility**: AI-generated code must be dual MIT / Palimpsest v0.8
+
+## AI Usage in Development
+
+This project was partially developed with assistance from:
+- **Claude AI** (Anthropic) - Architecture design, code generation, documentation
+- Disclosure: Transparent about AI assistance in commit messages
+
+## Data Privacy
+
+UbiCity's learning experience data (in `ubicity-data/`) is:
+- **Private by default** - Not for AI training without explicit user consent
+- **Local-first** - Never sent to external APIs
+- **Anonymization tools** - Available for privacy protection
+
+## Questions?
+
+Email: ai-policy@ubicity.example.org
+
+---
+
+This policy inspired by:
+- The AI.txt Specification (https://ai-txt.org/)
+- Creative Commons AI Training Policies
+- Open Source AI Definition (OSI draft)
+
+Last updated: 2025-11-22

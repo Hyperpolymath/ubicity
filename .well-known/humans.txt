@@ -1,0 +1,73 @@
+# UbiCity is made by humans
+
+## The Team
+
+**Original Author**: Hyperpolymath
+- Repository: https://github.com/Hyperpolymath
+- Role: Project lead, architecture, philosophy
+
+**AI Assistance**: Claude AI (Anthropic)
+- Role: Code generation, architecture suggestions, documentation
+- Disclosure: Transparent AI usage per ai.txt policy
+- Commits: Marked with AI assistance disclosure
+
+## Contributors
+
+See MAINTAINERS.md for current maintainers.
+See CONTRIBUTING.md for how to join the team.
+
+## Technology Stack
+
+- **Deno**: Modern JavaScript runtime
+- **ReScript**: Functional programming language (compiles to JavaScript)
+- **Rust**: Systems programming language (compiles to WASM)
+- **TypeScript**: Type-safe JavaScript
+
+## Core Philosophy
+
+UbiCity captures learning experiences in urban spaces.
+
+**Values**:
+- Tools not Platforms
+- Data First
+- Privacy by Default
+- Constraint Mechanisms
+- Offline-First
+
+## Site
+
+Repository: https://github.com/Hyperpolymath/ubicity
+Documentation: See README.md
+License: Dual MIT / Palimpsest v0.8
+
+## Standards
+
+- RFC 9116 (security.txt)
+- Rhodium Standard Repository (RSR) compliance
+- TPCF Perimeter 3 (Community Sandbox)
+
+## Thanks
+
+- ReScript community
+- Deno team
+- Rust WASM working group
+- All contributors (see git log)
+
+---
+
+Last update: 2025-11-22
+Location: Worldwide (distributed project)
+Language: English
+
+/* TEAM */
+Lead: Hyperpolymath
+Contributors: See git log
+AI Assist: Claude AI (Anthropic)
+
+/* SITE */
+Repository: github.com/Hyperpolymath/ubicity
+License: MIT / Palimpsest v0.8
+Standards: RSR-compliant
+
+/* THANKS */
+ReScript, Deno, Rust, WASM, Open Source Community

@@ -1,0 +1,27 @@
+node_modules/
+*.log
+.DS_Store
+.env
+.env.local
+
+# Keep example data, but ignore user data
+ubicity-data/experiences/*
+!ubicity-data/experiences/.gitkeep
+ubicity-data/analyses/*
+!ubicity-data/analyses/.gitkeep
+ubicity-data/maps/*
+!ubicity-data/maps/.gitkeep
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs
+dist/
+build/

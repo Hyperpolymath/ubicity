@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  ubicity:
+    build: .
+    image: ubicity:latest
+    container_name: ubicity-app
+    volumes:
+      - ./ubicity-data:/app/ubicity-data
+    environment:
+      - NODE_ENV=production
+    command: node src/cli.js help
+
+  # Optional: Web server for visualization
+  viz-server:
+    image: nginx:alpine
+    container_name: ubicity-viz
+    ports:
+      - "8080:80"
+    volumes:
+      - ./ubicity-data:/usr/share/nginx/html:ro
+    depends_on:
+      - ubicity
+
+# Usage:
+# docker-compose build
+# docker-compose run ubicity node src/cli.js report
+# docker-compose up viz-server  # View visualizations at http://localhost:8080

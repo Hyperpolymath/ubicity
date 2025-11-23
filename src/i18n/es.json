@@ -1,0 +1,44 @@
+{
+  "lang": "es",
+  "name": "Español",
+  "messages": {
+    "capture": {
+      "welcome": "UbiCity Captura de Aprendizaje",
+      "prompt_learner": "¿Quién es el aprendiz? (ID o nombre)",
+      "prompt_location": "¿Dónde sucedió esto? (nombre del lugar)",
+      "prompt_type": "¿Qué tipo de experiencia? (taller, proyecto, mentoría, etc.)",
+      "prompt_domain": "¿Qué dominios estuvieron involucrados? (separados por comas: electrónica, arte, etc.)",
+      "prompt_description": "Describe la experiencia de aprendizaje",
+      "success": "✅ ¡Experiencia capturada exitosamente!",
+      "error": "❌ Error al capturar experiencia"
+    },
+    "mapper": {
+      "hotspots_title": "🔥 Puntos Calientes de Aprendizaje",
+      "hotspots_description": "Lugares con actividades de aprendizaje diversas",
+      "network_title": "🕸️ Red de Dominios",
+      "network_description": "Conexiones interdisciplinarias",
+      "journey_title": "🚀 Viaje del Aprendiz",
+      "journey_description": "Progreso a lo largo del tiempo",
+      "no_data": "No se encontraron datos. ¡Captura algunas experiencias primero!"
+    },
+    "export": {
+      "csv_success": "✅ Exportado a CSV",
+      "geojson_success": "✅ Exportado a GeoJSON",
+      "dot_success": "✅ Exportado a DOT (Graphviz)",
+      "markdown_success": "✅ Exportado a Markdown"
+    },
+    "privacy": {
+      "level_private": "Privado (no compartido)",
+      "level_anonymous": "Anónimo (sin información personal)",
+      "level_public": "Público (compartible)",
+      "anonymized": "Datos anonimizados",
+      "location_fuzzed": "Precisión de ubicación reducida a ~1km"
+    },
+    "errors": {
+      "file_not_found": "Archivo no encontrado",
+      "permission_denied": "Permiso denegado",
+      "invalid_data": "Formato de datos inválido",
+      "storage_error": "Error de almacenamiento"
+    }
+  }
+}

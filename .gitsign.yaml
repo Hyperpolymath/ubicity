@@ -1,0 +1,33 @@
+# Git Sign Configuration for UbiCity
+# Requires: gitsign (https://github.com/sigstore/gitsign)
+#
+# Install:
+#   brew install sigstore/tap/gitsign
+#   OR
+#   go install github.com/sigstore/gitsign@latest
+#
+# Enable:
+#   git config --local commit.gpgsign true
+#   git config --local tag.gpgsign true
+#   git config --local gpg.x509.program gitsign
+#   git config --local gpg.format x509
+
+# Sigstore (keyless signing)
+fulcio:
+  url: https://fulcio.sigstore.dev
+  enabled: true
+
+rekor:
+  url: https://rekor.sigstore.dev
+  enabled: true
+
+# Fallback to GPG if sigstore unavailable
+gpg:
+  enabled: true
+  keyid: ""  # Set to your GPG key ID
+
+# Commit signing policy
+verify:
+  enabled: true
+  require_signed_commits: true  # For main branch
+  require_signed_tags: true    # For all releases

@@ -1,0 +1,5 @@
+# Trivy security scanner ignore file
+# For false positives or accepted risks
+
+# Example: CVE-2024-XXXXX - Accepted risk in dev dependency
+# Uncomment and add specific CVEs as needed

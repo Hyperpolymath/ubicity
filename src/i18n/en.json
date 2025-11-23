@@ -1,0 +1,44 @@
+{
+  "lang": "en",
+  "name": "English",
+  "messages": {
+    "capture": {
+      "welcome": "UbiCity Learning Capture",
+      "prompt_learner": "Who is the learner? (ID or name)",
+      "prompt_location": "Where did this happen? (location name)",
+      "prompt_type": "What type of experience? (workshop, project, mentorship, etc.)",
+      "prompt_domain": "What domains were involved? (comma-separated: electronics, art, etc.)",
+      "prompt_description": "Describe the learning experience",
+      "success": "✅ Experience captured successfully!",
+      "error": "❌ Error capturing experience"
+    },
+    "mapper": {
+      "hotspots_title": "🔥 Learning Hotspots",
+      "hotspots_description": "Locations with diverse learning activities",
+      "network_title": "🕸️ Domain Network",
+      "network_description": "Interdisciplinary connections",
+      "journey_title": "🚀 Learner Journey",
+      "journey_description": "Progress over time",
+      "no_data": "No data found. Capture some experiences first!"
+    },
+    "export": {
+      "csv_success": "✅ Exported to CSV",
+      "geojson_success": "✅ Exported to GeoJSON",
+      "dot_success": "✅ Exported to DOT (Graphviz)",
+      "markdown_success": "✅ Exported to Markdown"
+    },
+    "privacy": {
+      "level_private": "Private (not shared)",
+      "level_anonymous": "Anonymous (no PII)",
+      "level_public": "Public (shareable)",
+      "anonymized": "Data anonymized",
+      "location_fuzzed": "Location precision reduced to ~1km"
+    },
+    "errors": {
+      "file_not_found": "File not found",
+      "permission_denied": "Permission denied",
+      "invalid_data": "Invalid data format",
+      "storage_error": "Storage error"
+    }
+  }
+}

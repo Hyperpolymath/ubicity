@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 name: Security
 
 on:
@@ -8,6 +9,8 @@ on:
   schedule:
     # Run security scans weekly on Monday at 00:00 UTC
     - cron: '0 0 * * 1'
+
+permissions: read-all
 
 jobs:
   npm-audit:
